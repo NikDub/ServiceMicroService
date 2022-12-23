@@ -16,16 +16,16 @@ namespace ServiceMicroService.Controllers
             _specializationService = specializationService;
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpGet]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> Get()
         {
             var services = await _specializationService.GetAsync();
             return Ok(services);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpGet("{id}")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> GetById(string id)
         {
             var service = await _specializationService.GetByIdAsync(id);
@@ -34,8 +34,8 @@ namespace ServiceMicroService.Controllers
             return Ok(service);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpGet("{id}/service")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> GetByIdWithServices(string id)
         {
             var service = await _specializationService.GetByIdWithServicesAsync(id);
@@ -44,8 +44,8 @@ namespace ServiceMicroService.Controllers
             return Ok(service);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpPost]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> Create([FromBody] SpecializationForCreatedDTO model)
         {
             var service = await _specializationService.CreateAsync(model);
@@ -54,8 +54,8 @@ namespace ServiceMicroService.Controllers
             return Created("", service);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpPut("{id}")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> Update(string id, [FromBody] SpecializationForUpdateDTO model)
         {
             var service = await _specializationService.UpdateAsync(id, model);
@@ -65,8 +65,8 @@ namespace ServiceMicroService.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpPut("{id}/status/{status}")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> UpdateStatus(string id, bool status)
         {
             var service = await _specializationService.ChangeStatusAsync(id, status);

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -40,6 +42,10 @@ namespace ServiceMicroService.Extensions
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<ISpecializationService, SpecializationService>();
+
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
+            services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)

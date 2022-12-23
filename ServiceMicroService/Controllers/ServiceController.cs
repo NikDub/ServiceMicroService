@@ -23,16 +23,16 @@ namespace ServiceMicroService.Controllers
             return Ok(services);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpGet("all")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> GetAll()
         {
             var services = await _serviceService.GetAsync(true);
             return Ok(services);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpGet("{id}")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> GetById(string id)
         {
             var service = await _serviceService.GetByIDAsync(id);
@@ -41,8 +41,8 @@ namespace ServiceMicroService.Controllers
             return Ok(service);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpPost]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> Create([FromBody] ServiceForCreatedDTO model)
         {
             var service = await _serviceService.CreateAsync(model);
@@ -51,8 +51,8 @@ namespace ServiceMicroService.Controllers
             return Created("", service);
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpPut("{id}")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> Update(string id, [FromBody] ServiceForUpdateDTO model)
         {
             var service = await _serviceService.UpdateAsync(id, model);
@@ -62,8 +62,8 @@ namespace ServiceMicroService.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = nameof(UserRole.Receptionist))]
         [HttpPut("{id}/status/{status}")]
+        [Authorize(Roles = nameof(UserRole.Receptionist))]
         public async Task<IActionResult> UpdateStatus(string id, bool status)
         {
             var service = await _serviceService.ChangeStatusAsync(id, status);
