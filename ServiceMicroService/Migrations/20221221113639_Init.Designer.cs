@@ -10,7 +10,7 @@ using ServiceMicroService.Infrastructure;
 
 namespace ServiceMicroService.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20221221113639_Init")]
     partial class Init
     {

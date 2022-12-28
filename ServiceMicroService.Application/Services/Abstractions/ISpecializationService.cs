@@ -1,14 +1,13 @@
 ﻿using ServiceMicroService.Application.DTO.Specialization;
 
-namespace ServiceMicroService.Application.Services.Abstractions
+namespace ServiceMicroService.Application.Services.Abstractions;
+
+public interface ISpecializationService
 {
-    public interface ISpecializationService
-    {
-        Task<List<SpecializationDTO>> GetAsync();
-        Task<SpecializationDTO> GetByIdAsync(string id);
-        Task<SpecializationWithServiceDTO> GetByIdWithServicesAsync(string id);
-        Task<SpecializationDTO> CreateAsync(SpecializationForCreatedDTO model);
-        Task<SpecializationDTO> ChangeStatusAsync(string id, bool status);
-        Task<SpecializationDTO> UpdateAsync(string id, SpecializationForUpdateDTO model);
-    }
+    Task<List<SpecializationDto>> GetAsync();
+    Task<SpecializationDto> GetByIdAsync(string id);
+    Task<SpecializationWithServiceDto> GetByIdWithServicesAsync(string id);
+    Task<SpecializationDto> CreateAsync(SpecializationForCreatedDto model);
+    Task<SpecializationDto> ChangeStatusAsync(string id, bool status);
+    Task<SpecializationDto> UpdateAsync(string id, SpecializationForUpdateDto model);
 }

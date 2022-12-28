@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 using ServiceMicroService.Application.DTO.Specialization;
 
-namespace ServiceMicroService.Application.Validators.Specialization
+namespace ServiceMicroService.Application.Validators.Specialization;
+
+public class SpecializationForUpdateValidator : AbstractValidator<SpecializationForUpdateDto>
 {
-    public class SpecializationForUpdateValidator : AbstractValidator<SpecializationForUpdateDTO>
+    public SpecializationForUpdateValidator()
     {
-        public SpecializationForUpdateValidator()
-        {
-            RuleFor(r => r.SpecializationName).NotEmpty();
-            RuleFor(r => r.IsActive).NotEmpty();
-        }
+        RuleFor(r => r.SpecializationName).NotEmpty();
+        RuleFor(r => r.IsActive).NotEmpty();
     }
 }

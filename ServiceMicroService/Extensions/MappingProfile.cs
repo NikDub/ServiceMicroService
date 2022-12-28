@@ -3,23 +3,22 @@ using ServiceMicroService.Application.DTO.Service;
 using ServiceMicroService.Application.DTO.Specialization;
 using ServiceMicroService.Domain.Entities.Models;
 
-namespace ProfilesMicroService.Api.Extensions
+namespace ServiceMicroService.Extensions;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<Service, ServiceDTO>()
-                .ForMember("CategoryName", r => r.MapFrom(c => c.Category.CategoryName))
-                .ForMember("SpecializationName", r => r.MapFrom(c => c.Specialization.SpecializationName));
+        CreateMap<Service, ServiceDto>()
+            .ForMember("CategoryName", r => r.MapFrom(c => c.Category.CategoryName))
+            .ForMember("SpecializationName", r => r.MapFrom(c => c.Specialization.SpecializationName));
 
-            CreateMap<ServiceForCreatedDTO, Service>().ReverseMap();
-            CreateMap<ServiceForUpdateDTO, Service>().ReverseMap();
+        CreateMap<ServiceForCreatedDto, Service>().ReverseMap();
+        CreateMap<ServiceForUpdateDto, Service>().ReverseMap();
 
-            CreateMap<Specialization, SpecializationDTO>().ReverseMap();
-            CreateMap<Specialization, SpecializationForCreatedDTO>().ReverseMap();
-            CreateMap<Specialization, SpecializationForUpdateDTO>().ReverseMap();
-            CreateMap<Specialization, SpecializationWithServiceDTO>().ReverseMap();
-        }
+        CreateMap<Specialization, SpecializationDto>().ReverseMap();
+        CreateMap<Specialization, SpecializationForCreatedDto>().ReverseMap();
+        CreateMap<Specialization, SpecializationForUpdateDto>().ReverseMap();
+        CreateMap<Specialization, SpecializationWithServiceDto>().ReverseMap();
     }
 }

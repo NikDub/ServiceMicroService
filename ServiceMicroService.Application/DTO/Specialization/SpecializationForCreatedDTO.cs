@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ServiceMicroService.Application.DTO.Specialization
+namespace ServiceMicroService.Application.DTO.Specialization;
+
+public class SpecializationForCreatedDto
 {
-    public class SpecializationForCreatedDTO
-    {
-        [Required]
-        public string SpecializationName { get; set; }
-        [Required]
-        public bool IsActive { get; set; }
-    }
+    [Required] public string SpecializationName { get; set; }
+
+    [Required] public bool IsActive { get; set; }
 }

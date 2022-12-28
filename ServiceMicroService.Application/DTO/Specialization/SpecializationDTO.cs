@@ -1,9 +1,8 @@
-﻿namespace ServiceMicroService.Application.DTO.Specialization
+﻿namespace ServiceMicroService.Application.DTO.Specialization;
+
+public class SpecializationDto
 {
-    public class SpecializationDTO
-    {
-        public string Id { get; set; }
-        public string SpecializationName { get; set; }
-        public bool IsActive { get; set; }
-    }
+    public string Id { get; set; }
+    public string SpecializationName { get; set; }
+    public bool IsActive { get; set; }
 }

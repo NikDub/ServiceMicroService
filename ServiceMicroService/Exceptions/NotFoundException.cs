@@ -1,9 +1,8 @@
-﻿namespace ServiceMicroService.Exceptions
+﻿namespace ServiceMicroService.Exceptions;
+
+public class NotFoundException : Exception
 {
-    public class NotFoundException : Exception
+    public NotFoundException(string message) : base(message)
     {
-        public NotFoundException(string message) : base(message)
-        {
-        }
     }
 }
