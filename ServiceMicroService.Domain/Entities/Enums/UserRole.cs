@@ -1,4 +1,4 @@
-﻿namespace IdentityMicroService.Domain.Entities.Enums;
+﻿namespace ServiceMicroService.Domain.Entities.Enums;
 
 public enum UserRole
 {

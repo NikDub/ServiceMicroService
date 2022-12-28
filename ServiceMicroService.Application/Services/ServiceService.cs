@@ -22,7 +22,7 @@ public class ServiceService : IServiceService
         _mapper = mapper;
     }
 
-    public async Task<List<ServiceDto>> GetAsync(bool isActive = false)
+    public async Task<List<ServiceDto>> GetAsync(bool isActive)
     {
         IEnumerable<Service> services;
         if (isActive)
@@ -39,9 +39,9 @@ public class ServiceService : IServiceService
         return _mapper.Map<List<ServiceDto>>(services);
     }
 
-    public async Task<ServiceDto> GetByIdAsync(string Id)
+    public async Task<ServiceDto> GetByIdAsync(string id)
     {
-        var service = await _serviceRepository.GetByIdAsync(Id);
+        var service = await _serviceRepository.GetByIdAsync(id);
         return _mapper.Map<ServiceDto>(service);
     }
 

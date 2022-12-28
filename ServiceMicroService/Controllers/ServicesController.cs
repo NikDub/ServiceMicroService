@@ -1,8 +1,8 @@
-﻿using IdentityMicroService.Domain.Entities.Enums;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceMicroService.Application.DTO.Service;
 using ServiceMicroService.Application.Services.Abstractions;
+using ServiceMicroService.Domain.Entities.Enums;
 
 namespace ServiceMicroService.Controllers;
 

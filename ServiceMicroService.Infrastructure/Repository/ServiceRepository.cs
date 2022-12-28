@@ -30,9 +30,9 @@ public class ServiceRepository : IServiceRepository
         return await _db.Services.ToListAsync();
     }
 
-    public async Task<IEnumerable<Service>> GetByCategoryAndIsActiveAsync(bool isActive, string CategoryId)
+    public async Task<IEnumerable<Service>> GetByCategoryAndIsActiveAsync(bool isActive, string categoryId)
     {
-        return await _db.Services.Where(r => r.IsActive == isActive && r.CategoryId == CategoryId).ToListAsync();
+        return await _db.Services.Where(r => r.IsActive == isActive && r.CategoryId == categoryId).ToListAsync();
     }
 
     public async Task<Service> GetByIdAsync(string id)

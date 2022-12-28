@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 
 
@@ -68,7 +68,7 @@ namespace ServiceMicroService.Migrations
                 values: new object[,]
                 {
                     { "4050f457-6642-4bd6-b113-d2a9ad92af56", "Consultations", 10 },
-                    { "8a8abd81-222a-4c27-a414-43dff95e6549", "Analyses", 10 },
+                    { "8a8abd81-222a-4c27-a414-43dff95e6549", "Analyzes", 10 },
                     { "c47124fa-96d5-4534-bc1e-2dc81bdfdc6b", "Diagnostics", 10 }
                 });
 

@@ -1,7 +1,7 @@
 ﻿using ServiceMicroService.Domain.Entities.Models;
 using ServiceMicroService.Exceptions;
 
-namespace ServiceMicroService.Middlewares;
+namespace ServiceMicroService.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
