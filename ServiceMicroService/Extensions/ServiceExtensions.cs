@@ -8,6 +8,8 @@ using ProfilesMicroService.Api.Extensions;
 using ServiceMicroService.Application.Services;
 using ServiceMicroService.Application.Services.Abstractions;
 using ServiceMicroService.Infrastructure;
+using ServiceMicroService.Infrastructure.Repository;
+using ServiceMicroService.Infrastructure.Repository.Abstractions;
 
 namespace ServiceMicroService.Extensions
 {
@@ -42,7 +44,9 @@ namespace ServiceMicroService.Extensions
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<ISpecializationService, SpecializationService>();
-
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
@@ -75,8 +79,6 @@ namespace ServiceMicroService.Extensions
                         new List<string>()
                     }
                 });
-
-                //setup.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Comments.xml"));
             });
         }
 

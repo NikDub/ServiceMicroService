@@ -8,10 +8,10 @@ namespace ServiceMicroService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceController : Controller
+    public class ServicesController : Controller
     {
         private readonly IServiceService _serviceService;
-        public ServiceController(IServiceService serviceService)
+        public ServicesController(IServiceService serviceService)
         {
             _serviceService = serviceService;
         }
@@ -47,7 +47,7 @@ namespace ServiceMicroService.Controllers
         {
             var service = await _serviceService.CreateAsync(model);
             if (service == null)
-                return BadRequest();
+                return BadRequest("Something went wrong");
             return Created("", service);
         }
 
@@ -58,7 +58,6 @@ namespace ServiceMicroService.Controllers
             var service = await _serviceService.UpdateAsync(id, model);
             if (service == null)
                 return NotFound();
-
             return NoContent();
         }
 
@@ -69,7 +68,6 @@ namespace ServiceMicroService.Controllers
             var service = await _serviceService.ChangeStatusAsync(id, status);
             if (service == null)
                 return NotFound();
-
             return NoContent();
         }
     }

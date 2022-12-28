@@ -3,47 +3,51 @@ using Microsoft.EntityFrameworkCore;
 using ServiceMicroService.Application.DTO.Service;
 using ServiceMicroService.Application.Services.Abstractions;
 using ServiceMicroService.Domain.Entities.Models;
-using ServiceMicroService.Infrastructure;
+using ServiceMicroService.Infrastructure.Repository.Abstractions;
 
 namespace ServiceMicroService.Application.Services
 {
     public class ServiceService : IServiceService
     {
-        private readonly ApplicationDBContext _db;
+        private readonly IServiceRepository _serviceRepository;
+        private readonly ISpecializationRepository _specializationRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
 
-        public ServiceService(ApplicationDBContext db, IMapper mapper)
+        public ServiceService(IServiceRepository serviceRepository, ISpecializationRepository specializationRepository, ICategoryRepository categoryRepository, IMapper mapper)
         {
-            _db = db;
+            _serviceRepository = serviceRepository;
+            _specializationRepository = specializationRepository;
+            _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
 
         public async Task<List<ServiceDTO>> GetAsync()
         {
-            var services = await _db.Services.ToListAsync();
+            var services = await _serviceRepository.GetAllAsync();
             return _mapper.Map<List<ServiceDTO>>(services);
         }
 
-        public async Task<List<ServiceDTO>> GetAsync(bool OnlyActive = false)
+        public async Task<List<ServiceDTO>> GetAsync(bool isActive = false)
         {
-            List<Service> services;
-            if (OnlyActive)
-                services = await _db.Services.Where(r => r.IsActive == OnlyActive).ToListAsync();
+            IEnumerable<Service> services;
+            if (isActive)
+                services = await _serviceRepository.GetAllActiveOrNotAsync(isActive);
             else
-                services = await _db.Services.ToListAsync();
+                services = await _serviceRepository.GetAllAsync();
 
             return _mapper.Map<List<ServiceDTO>>(services);
         }
 
         public async Task<List<ServiceDTO>> GetByCategoryAsync(string CategoryId, bool isActive = false)
         {
-            var services = await _db.Services.Where(r => r.IsActive == isActive && r.CategoryId == CategoryId).ToListAsync();
+            var services = await _serviceRepository.GetByCategoryAndIsActiveAsync(isActive, CategoryId);
             return _mapper.Map<List<ServiceDTO>>(services);
         }
 
         public async Task<ServiceDTO> GetByIDAsync(string Id)
         {
-            var service = await _db.Services.FirstOrDefaultAsync(r => r.Id == Id);
+            var service = await _serviceRepository.GetByIdAsync(Id);
             return _mapper.Map<ServiceDTO>(service);
         }
 
@@ -52,8 +56,8 @@ namespace ServiceMicroService.Application.Services
             if (model == null)
                 return null;
 
-            var category = await _db.Categories.FirstOrDefaultAsync(r => r.CategoryName == model.CategoryName);
-            var specialization = await _db.Specializations.FirstOrDefaultAsync(r => r.SpecializationName == model.SpecializationName);
+            var category = await _categoryRepository.GetByNameAsync(model.CategoryName);
+            var specialization = await _specializationRepository.GetByNameAsync(model.SpecializationName);
             if (category == null || specialization == null)
                 return null;
 
@@ -61,37 +65,36 @@ namespace ServiceMicroService.Application.Services
             service.CategoryId = category.Id;
             service.SpecializationId = specialization.Id;
 
-            _db.Services.Add(service);
-            await _db.SaveChangesAsync();
+            await _serviceRepository.InsertAsync(service);
             return _mapper.Map<ServiceDTO>(service);
         }
 
         public async Task<ServiceDTO> ChangeStatusAsync(string id, bool status)
         {
-            var service = await _db.Services.FirstOrDefaultAsync(r => r.Id == id);
+            var service = await _serviceRepository.GetByIdAsync(id);
             if (service == null)
                 return null;
 
             service.IsActive = status;
-            await _db.SaveChangesAsync();
+            await _serviceRepository.UpdateAsync(service);
             return _mapper.Map<ServiceDTO>(service);
         }
 
         public async Task<ServiceDTO> UpdateAsync(string id, ServiceForUpdateDTO model)
         {
-            var service = await _db.Services.FirstOrDefaultAsync(r => r.Id == id);
+            var service = await _serviceRepository.GetByIdAsync(id);
             if (service == null)
                 return null;
 
-            var category = await _db.Categories.FirstOrDefaultAsync(r => r.CategoryName == model.CategoryName);
-            var specialization = await _db.Specializations.FirstOrDefaultAsync(r => r.SpecializationName == model.SpecializationName);
+            var category = await _categoryRepository.GetByNameAsync(model.CategoryName);
+            var specialization = await _specializationRepository.GetByNameAsync(model.SpecializationName);
             if (category == null || specialization == null)
                 return null;
 
             _mapper.Map(model, service);
             service.CategoryId = category.Id;
             service.SpecializationId = specialization.Id;
-            await _db.SaveChangesAsync();
+            await _serviceRepository.UpdateAsync(service);
             return _mapper.Map<ServiceDTO>(service);
         }
     }

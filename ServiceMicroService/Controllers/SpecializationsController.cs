@@ -8,10 +8,10 @@ namespace ServiceMicroService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SpecializationController : Controller
+    public class SpecializationsController : Controller
     {
         private readonly ISpecializationService _specializationService;
-        public SpecializationController(ISpecializationService specializationService)
+        public SpecializationsController(ISpecializationService specializationService)
         {
             _specializationService = specializationService;
         }
@@ -50,7 +50,7 @@ namespace ServiceMicroService.Controllers
         {
             var service = await _specializationService.CreateAsync(model);
             if (service == null)
-                return BadRequest();
+                return BadRequest("Something went wrong");
             return Created("", service);
         }
 
@@ -61,7 +61,6 @@ namespace ServiceMicroService.Controllers
             var service = await _specializationService.UpdateAsync(id, model);
             if (service == null)
                 return NotFound();
-
             return NoContent();
         }
 
@@ -72,7 +71,6 @@ namespace ServiceMicroService.Controllers
             var service = await _specializationService.ChangeStatusAsync(id, status);
             if (service == null)
                 return NotFound();
-
             return NoContent();
         }
     }
