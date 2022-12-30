@@ -32,7 +32,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category> GetByNameAsync(string name)
     {
-        return await _db.Categories.FindAsync(name);
+        return await _db.Categories.AsNoTracking().FirstOrDefaultAsync(r => r.Name == name);
     }
 
     public async Task InsertAsync(Category category)

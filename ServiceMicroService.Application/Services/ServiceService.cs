@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using ServiceMicroService.Application.DTO.Service;
+using ServiceMicroService.Application.Dto.Service;
 using ServiceMicroService.Application.Services.Abstractions;
+using ServiceMicroService.Domain.Entities.Enums;
 using ServiceMicroService.Domain.Entities.Models;
 using ServiceMicroService.Infrastructure.Repository.Abstractions;
 
@@ -22,21 +23,27 @@ public class ServiceService : IServiceService
         _mapper = mapper;
     }
 
-    public async Task<List<ServiceDto>> GetAsync(bool isActive)
+    public async Task<List<ServiceDto>> GetActiveAsync()
     {
-        IEnumerable<Service> services;
-        if (isActive)
-            services = await _serviceRepository.GetAllActiveOrNotAsync(isActive);
-        else
-            services = await _serviceRepository.GetAllAsync();
-
+        var services = await _serviceRepository.GetAllActiveOrNotAsync(true);
         return _mapper.Map<List<ServiceDto>>(services);
     }
 
-    public async Task<List<ServiceDto>> GetByCategoryAsync(string categoryId, bool isActive = false)
+    public async Task<ServicesListsDto> GetAllDividedByCategoryAsync()
     {
-        var services = await _serviceRepository.GetByCategoryAndIsActiveAsync(isActive, categoryId);
-        return _mapper.Map<List<ServiceDto>>(services);
+        var services = await _serviceRepository.GetGroupedByCategoryAsync();
+        var serviceList = new ServicesListsDto();
+
+        if (services.ContainsKey(nameof(CategoryEnum.Analyzes)))
+            serviceList.Analyzes = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Analyzes)].ToList());
+
+        if (services.ContainsKey(nameof(CategoryEnum.Diagnostics)))
+            serviceList.Analyzes = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Diagnostics)].ToList());
+
+        if (services.ContainsKey(nameof(CategoryEnum.Consultations)))
+            serviceList.Analyzes = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Consultations)].ToList());
+
+        return serviceList;
     }
 
     public async Task<ServiceDto> GetByIdAsync(string id)
@@ -90,11 +97,5 @@ public class ServiceService : IServiceService
         service.SpecializationId = specialization.Id;
         await _serviceRepository.UpdateAsync(service);
         return _mapper.Map<ServiceDto>(service);
-    }
-
-    public async Task<List<ServiceDto>> GetAsync()
-    {
-        var services = await _serviceRepository.GetAllAsync();
-        return _mapper.Map<List<ServiceDto>>(services);
     }
 }

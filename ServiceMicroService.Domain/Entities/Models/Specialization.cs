@@ -9,7 +9,7 @@ public class Specialization
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
 
-    public string SpecializationName { get; set; }
+    public string Name { get; set; }
     public bool IsActive { get; set; }
 
     public virtual ICollection<Service> Services { get; set; }

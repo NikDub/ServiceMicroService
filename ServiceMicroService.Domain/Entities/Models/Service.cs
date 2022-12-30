@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServiceMicroService.Domain.Entities.Models;
 
@@ -9,8 +10,9 @@ public class Service
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
 
-    public string ServiceName { get; set; }
-    public float Price { get; set; }
+    public string Name { get; set; }
+    [Precision(18, 2)]
+    public decimal Price { get; set; }
     public bool IsActive { get; set; }
 
     public string CategoryId { get; set; }

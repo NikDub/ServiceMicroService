@@ -9,7 +9,7 @@ public class Category
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
 
-    public string CategoryName { get; set; }
+    public string Name { get; set; }
     public int TimeSlotSize { get; set; }
 
     public virtual ICollection<Service> Services { get; set; }

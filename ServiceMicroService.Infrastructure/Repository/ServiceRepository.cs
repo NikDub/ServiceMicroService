@@ -22,17 +22,19 @@ public class ServiceRepository : IServiceRepository
 
     public async Task<IEnumerable<Service>> GetAllActiveOrNotAsync(bool isActive)
     {
-        return await _db.Services.Where(r => r.IsActive == isActive).ToListAsync();
+        return await _db.Services.Where(r => r.IsActive == isActive).AsNoTracking().ToListAsync();
     }
 
-    public async Task<IEnumerable<Service>> GetAllAsync()
+    public async Task<Dictionary<string, List<Service>>> GetGroupedByCategoryAsync()
     {
-        return await _db.Services.ToListAsync();
+        return await _db.Services.GroupBy(r=>r.Category.Name)
+            .Select(r=>new {r.Key, Services = r.ToList()})
+            .ToDictionaryAsync(r=>r.Key, t=>t.Services);
     }
 
-    public async Task<IEnumerable<Service>> GetByCategoryAndIsActiveAsync(bool isActive, string categoryId)
+    public async Task<IEnumerable<Service>> GetByCategoryAsync(string categoryName)
     {
-        return await _db.Services.Where(r => r.IsActive == isActive && r.CategoryId == categoryId).ToListAsync();
+        return await _db.Services.Where(r => r.Category.Name == categoryName).AsNoTracking().ToListAsync();
     }
 
     public async Task<Service> GetByIdAsync(string id)

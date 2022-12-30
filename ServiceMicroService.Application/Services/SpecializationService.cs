@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ServiceMicroService.Application.DTO.Specialization;
+using ServiceMicroService.Application.Dto.Specialization;
 using ServiceMicroService.Application.Services.Abstractions;
 using ServiceMicroService.Domain.Entities.Models;
 using ServiceMicroService.Infrastructure.Repository.Abstractions;

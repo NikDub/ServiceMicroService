@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ServiceMicroService.Application.DTO.Specialization;
+using ServiceMicroService.Application.Dto.Specialization;
 
 namespace ServiceMicroService.Application.Validators.Specialization;
 
@@ -7,7 +7,6 @@ public class SpecializationForCreatedValidator : AbstractValidator<Specializatio
 {
     public SpecializationForCreatedValidator()
     {
-        RuleFor(r => r.SpecializationName).NotEmpty();
-        RuleFor(r => r.IsActive).NotEmpty();
+        RuleFor(r => r.Name).NotEmpty();
     }
 }

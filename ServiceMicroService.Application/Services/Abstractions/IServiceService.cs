@@ -1,11 +1,11 @@
-﻿using ServiceMicroService.Application.DTO.Service;
+﻿using ServiceMicroService.Application.Dto.Service;
 
 namespace ServiceMicroService.Application.Services.Abstractions;
 
 public interface IServiceService
 {
-    Task<List<ServiceDto>> GetAsync(bool onlyActive = false);
-    Task<List<ServiceDto>> GetByCategoryAsync(string categoryId, bool isActive = false);
+    Task<List<ServiceDto>> GetActiveAsync();
+    Task<ServicesListsDto> GetAllDividedByCategoryAsync();
     Task<ServiceDto> GetByIdAsync(string id);
     Task<ServiceDto> CreateAsync(ServiceForCreatedDto model);
     Task<ServiceDto> ChangeStatusAsync(string id, bool status);

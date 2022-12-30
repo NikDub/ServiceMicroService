@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ServiceMicroService.Application.DTO.Specialization;
+using ServiceMicroService.Application.Dto.Specialization;
 using ServiceMicroService.Application.Services.Abstractions;
 using ServiceMicroService.Domain.Entities.Enums;
 
@@ -31,7 +31,7 @@ public class SpecializationsController : Controller
     {
         var service = await _specializationService.GetByIdAsync(id);
         if (service == null)
-            return NotFound();
+            return NotFound("The record was not found.");
         return Ok(service);
     }
 
@@ -41,7 +41,7 @@ public class SpecializationsController : Controller
     {
         var service = await _specializationService.GetByIdWithServicesAsync(id);
         if (service == null)
-            return NotFound();
+            return NotFound("The record was not found.");
         return Ok(service);
     }
 
@@ -51,7 +51,7 @@ public class SpecializationsController : Controller
     {
         var service = await _specializationService.CreateAsync(model);
         if (service == null)
-            return BadRequest("Something went wrong");
+            return BadRequest("Something went wrong.");
         return Created("", service);
     }
 
@@ -61,7 +61,7 @@ public class SpecializationsController : Controller
     {
         var service = await _specializationService.UpdateAsync(id, model);
         if (service == null)
-            return NotFound();
+            return NotFound("The record was not found.");
         return NoContent();
     }
 
@@ -71,7 +71,7 @@ public class SpecializationsController : Controller
     {
         var service = await _specializationService.ChangeStatusAsync(id, status);
         if (service == null)
-            return NotFound();
+            return NotFound("The record was not found.");
         return NoContent();
     }
 }

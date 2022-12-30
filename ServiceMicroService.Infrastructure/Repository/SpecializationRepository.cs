@@ -22,17 +22,17 @@ public class SpecializationRepository : ISpecializationRepository
 
     public async Task<IEnumerable<Specialization>> GetAllAsync()
     {
-        return await _db.Specializations.ToListAsync();
+        return await _db.Specializations.AsNoTracking().ToListAsync();
     }
 
     public async Task<Specialization> GetByNameAsync(string name)
     {
-        return await _db.Specializations.FindAsync(name);
+        return await _db.Specializations.AsNoTracking().FirstOrDefaultAsync(r => r.Name == name);
     }
 
     public async Task<Specialization> GetByIdAsync(string id)
     {
-        return await _db.Specializations.FindAsync(id);
+        return await _db.Specializations.FirstOrDefaultAsync(r => r.Id == id);
     }
 
     public async Task InsertAsync(Specialization patient)

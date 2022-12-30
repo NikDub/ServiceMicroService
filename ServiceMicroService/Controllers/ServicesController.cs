@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ServiceMicroService.Application.DTO.Service;
+using ServiceMicroService.Application.Dto.Service;
 using ServiceMicroService.Application.Services.Abstractions;
 using ServiceMicroService.Domain.Entities.Enums;
 
@@ -20,7 +20,7 @@ public class ServicesController : Controller
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var services = await _serviceService.GetAsync(true);
+        var services = await _serviceService.GetActiveAsync();
         return Ok(services);
     }
 
@@ -28,7 +28,7 @@ public class ServicesController : Controller
     [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> GetAll()
     {
-        var services = await _serviceService.GetAsync(true);
+        var services = await _serviceService.GetAllDividedByCategoryAsync();
         return Ok(services);
     }
 
@@ -38,7 +38,7 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.GetByIdAsync(id);
         if (service == null)
-            return NotFound();
+            return NotFound("The record was not found.");
         return Ok(service);
     }
 
@@ -48,7 +48,7 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.CreateAsync(model);
         if (service == null)
-            return BadRequest("Something went wrong");
+            return BadRequest("Something went wrong.");
         return Created("", service);
     }
 
@@ -58,7 +58,7 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.UpdateAsync(id, model);
         if (service == null)
-            return NotFound();
+            return NotFound("Service or category or specialization was not found.");
         return NoContent();
     }
 
@@ -68,7 +68,7 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.ChangeStatusAsync(id, status);
         if (service == null)
-            return NotFound();
+            return NotFound("The record was not found.");
         return NoContent();
     }
 }

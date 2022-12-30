@@ -1,4 +1,4 @@
-﻿using ServiceMicroService.Application.DTO.Specialization;
+﻿using ServiceMicroService.Application.Dto.Specialization;
 
 namespace ServiceMicroService.Application.Services.Abstractions;
 

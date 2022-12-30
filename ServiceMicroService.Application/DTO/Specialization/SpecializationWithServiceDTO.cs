@@ -1,11 +1,11 @@
-﻿using ServiceMicroService.Application.DTO.Service;
+﻿using ServiceMicroService.Application.Dto.Service;
 
-namespace ServiceMicroService.Application.DTO.Specialization;
+namespace ServiceMicroService.Application.Dto.Specialization;
 
 public class SpecializationWithServiceDto
 {
     public string Id { get; set; }
-    public string SpecializationName { get; set; }
+    public string Name { get; set; }
     public bool IsActive { get; set; }
 
     public ICollection<ServiceDto> Services { get; set; }

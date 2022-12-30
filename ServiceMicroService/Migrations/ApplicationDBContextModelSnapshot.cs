@@ -10,13 +10,16 @@ using ServiceMicroService.Infrastructure;
 namespace ServiceMicroService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -27,7 +30,7 @@ namespace ServiceMicroService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TimeSlotSize")
@@ -41,19 +44,19 @@ namespace ServiceMicroService.Migrations
                         new
                         {
                             Id = "4050f457-6642-4bd6-b113-d2a9ad92af56",
-                            CategoryName = "Consultations",
+                            Name = "Consultations",
                             TimeSlotSize = 10
                         },
                         new
                         {
                             Id = "c47124fa-96d5-4534-bc1e-2dc81bdfdc6b",
-                            CategoryName = "Diagnostics",
+                            Name = "Diagnostics",
                             TimeSlotSize = 10
                         },
                         new
                         {
                             Id = "8a8abd81-222a-4c27-a414-43dff95e6549",
-                            CategoryName = "Analyses",
+                            Name = "Analyzes",
                             TimeSlotSize = 10
                         });
                 });
@@ -70,11 +73,12 @@ namespace ServiceMicroService.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.Property<string>("ServiceName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SpecializationId")
                         .HasColumnType("nvarchar(450)");
@@ -97,7 +101,7 @@ namespace ServiceMicroService.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SpecializationName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
