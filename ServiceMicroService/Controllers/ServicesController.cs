@@ -38,7 +38,7 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.GetByIdAsync(id);
         if (service == null)
-            return NotFound("The record was not found.");
+            return NotFound($"The record {id} was not found.");
         return Ok(service);
     }
 
@@ -58,7 +58,7 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.UpdateAsync(id, model);
         if (service == null)
-            return NotFound("Service or category or specialization was not found.");
+            return NotFound($"Service {id} or category {model.CategoryName} or specialization {model.SpecializationName} was not found.");
         return NoContent();
     }
 
@@ -68,7 +68,7 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.ChangeStatusAsync(id, status);
         if (service == null)
-            return NotFound("The record was not found.");
+            return NotFound($"The record {id} was not found.");
         return NoContent();
     }
 }

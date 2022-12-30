@@ -27,9 +27,9 @@ public class ServiceRepository : IServiceRepository
 
     public async Task<Dictionary<string, List<Service>>> GetGroupedByCategoryAsync()
     {
-        return await _db.Services.GroupBy(r=>r.Category.Name)
-            .Select(r=>new {r.Key, Services = r.ToList()})
-            .ToDictionaryAsync(r=>r.Key, t=>t.Services);
+        return await _db.Services.GroupBy(r => r.Category.Name)
+            .Select(r => new { r.Key, Services = r.ToList() })
+            .ToDictionaryAsync(r => r.Key, t => t.Services);
     }
 
     public async Task<IEnumerable<Service>> GetByCategoryAsync(string categoryName)
