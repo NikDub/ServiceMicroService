@@ -16,7 +16,7 @@ public class ServiceRepository : IServiceRepository
     public async Task DeleteAsync(string id)
     {
         var service = await _db.Services.FindAsync(id);
-        _db.Services.Remove(service);
+        if (service != null) _db.Services.Remove(service);
         await _db.SaveChangesAsync();
     }
 

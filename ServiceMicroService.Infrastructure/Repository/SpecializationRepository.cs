@@ -16,7 +16,7 @@ public class SpecializationRepository : ISpecializationRepository
     public async Task DeleteAsync(string id)
     {
         var specialization = await _db.Specializations.FindAsync(id);
-        _db.Specializations.Remove(specialization);
+        if (specialization != null) _db.Specializations.Remove(specialization);
         await _db.SaveChangesAsync();
     }
 

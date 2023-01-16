@@ -58,7 +58,8 @@ public class ServicesController : Controller
     {
         var service = await _serviceService.UpdateAsync(id, model);
         if (service == null)
-            return NotFound($"Service {id} or category {model.CategoryName} or specialization {model.SpecializationName} was not found.");
+            return NotFound(
+                $"Service {id} or category {model.CategoryName} or specialization {model.SpecializationName} was not found.");
         return NoContent();
     }
 

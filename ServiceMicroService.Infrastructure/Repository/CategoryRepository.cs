@@ -16,7 +16,7 @@ public class CategoryRepository : ICategoryRepository
     public async Task DeleteAsync(string id)
     {
         var category = await _db.Categories.FindAsync(id);
-        _db.Categories.Remove(category);
+        if (category != null) _db.Categories.Remove(category);
         await _db.SaveChangesAsync();
     }
 
