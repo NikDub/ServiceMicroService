@@ -13,13 +13,6 @@ public class ServiceRepository : IServiceRepository
         _db = dB;
     }
 
-    public async Task DeleteAsync(string id)
-    {
-        var service = await _db.Services.FindAsync(id);
-        if (service != null) _db.Services.Remove(service);
-        await _db.SaveChangesAsync();
-    }
-
     public async Task<IEnumerable<Service>> GetAllActiveOrNotAsync(bool isActive)
     {
         return await _db.Services.Where(r => r.IsActive == isActive).AsNoTracking().ToListAsync();
@@ -32,11 +25,6 @@ public class ServiceRepository : IServiceRepository
             .ToDictionaryAsync(r => r.Key, t => t.Services);
     }
 
-    public async Task<IEnumerable<Service>> GetByCategoryAsync(string categoryName)
-    {
-        return await _db.Services.Where(r => r.Category.Name == categoryName).AsNoTracking().ToListAsync();
-    }
-
     public async Task<Service> GetByIdAsync(string id)
     {
         return await _db.Services.FindAsync(id);
@@ -47,7 +35,6 @@ public class ServiceRepository : IServiceRepository
         await _db.Services.AddAsync(service);
         await _db.SaveChangesAsync();
     }
-
     public async Task UpdateAsync(Service service)
     {
         _db.Entry(service).State = EntityState.Modified;
