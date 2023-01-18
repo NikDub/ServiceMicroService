@@ -18,49 +18,49 @@ public class SpecializationsController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = nameof(UserRole.Receptionist))]
+    [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Patient)}")]
     public async Task<IActionResult> Get()
     {
-        var services = await _specializationService.GetAsync();
-        return Ok(services);
+        var specializations = await _specializationService.GetAsync();
+        return Ok(specializations);
     }
 
     [HttpGet("{id}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> GetById(string id)
     {
-        var service = await _specializationService.GetByIdAsync(id);
-        if (service == null)
+        var specializations = await _specializationService.GetByIdAsync(id);
+        if (specializations == null)
             return NotFound($"The record {id} was not found.");
-        return Ok(service);
+        return Ok(specializations);
     }
 
     [HttpGet("{id}/service")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> GetByIdWithServices(string id)
     {
-        var service = await _specializationService.GetByIdWithServicesAsync(id);
-        if (service == null)
+        var specializations = await _specializationService.GetByIdWithServicesAsync(id);
+        if (specializations == null)
             return NotFound($"The record {id} was not found.");
-        return Ok(service);
+        return Ok(specializations);
     }
 
     [HttpPost]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> Create([FromBody] SpecializationForCreatedDto model)
     {
-        var service = await _specializationService.CreateAsync(model);
-        if (service == null)
+        var specializations = await _specializationService.CreateAsync(model);
+        if (specializations == null)
             return BadRequest("Something went wrong.");
-        return Created("", service);
+        return Created("", specializations);
     }
 
     [HttpPut("{id}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> Update(string id, [FromBody] SpecializationForUpdateDto model)
     {
-        var service = await _specializationService.UpdateAsync(id, model);
-        if (service == null)
+        var specializations = await _specializationService.UpdateAsync(id, model);
+        if (specializations == null)
             return NotFound($"The record {id} was not found.");
         return NoContent();
     }
@@ -69,8 +69,8 @@ public class SpecializationsController : Controller
     [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> UpdateStatus(string id, bool status)
     {
-        var service = await _specializationService.ChangeStatusAsync(id, status);
-        if (service == null)
+        var specializations = await _specializationService.ChangeStatusAsync(id, status);
+        if (specializations == null)
             return NotFound($"The record {id} was not found.");
         return NoContent();
     }

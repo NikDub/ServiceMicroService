@@ -9,5 +9,4 @@ public interface ISpecializationRepository
     Task<Specialization> GetByNameAsync(string name);
     Task InsertAsync(Specialization patient);
     Task UpdateAsync(Specialization patient);
-    Task DeleteAsync(string id);
 }

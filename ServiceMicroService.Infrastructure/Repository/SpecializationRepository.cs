@@ -13,13 +13,6 @@ public class SpecializationRepository : ISpecializationRepository
         _db = dB;
     }
 
-    public async Task DeleteAsync(string id)
-    {
-        var specialization = await _db.Specializations.FindAsync(id);
-        _db.Specializations.Remove(specialization);
-        await _db.SaveChangesAsync();
-    }
-
     public async Task<IEnumerable<Specialization>> GetAllAsync()
     {
         return await _db.Specializations.AsNoTracking().ToListAsync();
