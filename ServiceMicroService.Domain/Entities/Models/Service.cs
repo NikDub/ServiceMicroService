@@ -8,7 +8,7 @@ public class Service
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Name { get; set; }
 
@@ -16,8 +16,8 @@ public class Service
 
     public bool IsActive { get; set; }
 
-    public string CategoryId { get; set; }
+    public Guid CategoryId { get; set; }
     public virtual Category Category { get; set; }
-    public string SpecializationId { get; set; }
+    public Guid SpecializationId { get; set; }
     public virtual Specialization Specialization { get; set; }
 }

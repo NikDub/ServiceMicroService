@@ -23,7 +23,7 @@ public class SpecializationRepository : ISpecializationRepository
         return await _db.Specializations.AsNoTracking().FirstOrDefaultAsync(r => r.Name == name);
     }
 
-    public async Task<Specialization> GetByIdAsync(string id)
+    public async Task<Specialization> GetByIdAsync(Guid id)
     {
         return await _db.Specializations.FirstOrDefaultAsync(r => r.Id == id);
     }

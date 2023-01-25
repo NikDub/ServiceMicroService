@@ -27,7 +27,7 @@ public class SpecializationsController : Controller
 
     [HttpGet("{id}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var specializations = await _specializationService.GetByIdAsync(id);
         if (specializations == null)
@@ -37,7 +37,7 @@ public class SpecializationsController : Controller
 
     [HttpGet("{id}/service")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> GetByIdWithServices(string id)
+    public async Task<IActionResult> GetByIdWithServices(Guid id)
     {
         var specializations = await _specializationService.GetByIdWithServicesAsync(id);
         if (specializations == null)
@@ -57,7 +57,7 @@ public class SpecializationsController : Controller
 
     [HttpPut("{id}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> Update(string id, [FromBody] SpecializationForUpdateDto model)
+    public async Task<IActionResult> Update(Guid id, [FromBody] SpecializationForUpdateDto model)
     {
         var specializations = await _specializationService.UpdateAsync(id, model);
         if (specializations == null)
@@ -67,7 +67,7 @@ public class SpecializationsController : Controller
 
     [HttpPut("{id}/status/{status}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> UpdateStatus(string id, bool status)
+    public async Task<IActionResult> UpdateStatus(Guid id, bool status)
     {
         var specializations = await _specializationService.ChangeStatusAsync(id, status);
         if (specializations == null)

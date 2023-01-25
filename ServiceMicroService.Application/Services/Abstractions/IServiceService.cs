@@ -6,8 +6,8 @@ public interface IServiceService
 {
     Task<List<ServiceDto>> GetActiveAsync();
     Task<ServicesListsDto> GetAllDividedByCategoryAsync();
-    Task<ServiceDto> GetByIdAsync(string id);
+    Task<ServiceDto> GetByIdAsync(Guid id);
     Task<ServiceDto> CreateAsync(ServiceForCreatedDto model);
-    Task<ServiceDto> ChangeStatusAsync(string id, bool status);
-    Task<ServiceDto> UpdateAsync(string id, ServiceForUpdateDto model);
+    Task<ServiceDto> ChangeStatusAsync(Guid id, bool status);
+    Task<ServiceDto> UpdateAsync(Guid id, ServiceForUpdateDto model);
 }

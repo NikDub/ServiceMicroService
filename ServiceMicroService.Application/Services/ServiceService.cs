@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using MassTransit;
+using Microsoft.Extensions.Configuration;
 using ServiceMicroService.Application.Dto.Service;
 using ServiceMicroService.Application.Services.Abstractions;
 using ServiceMicroService.Domain.Entities.Enums;
 using ServiceMicroService.Domain.Entities.Models;
 using ServiceMicroService.Infrastructure.Repository.Abstractions;
+using SharedModel;
 
 namespace ServiceMicroService.Application.Services;
 
@@ -11,16 +14,18 @@ public class ServiceService : IServiceService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
+    private readonly ISendEndpoint _endPoint;
     private readonly IServiceRepository _serviceRepository;
     private readonly ISpecializationRepository _specializationRepository;
 
     public ServiceService(IServiceRepository serviceRepository, ISpecializationRepository specializationRepository,
-        ICategoryRepository categoryRepository, IMapper mapper)
+        ICategoryRepository categoryRepository, IMapper mapper, IBus bus, IConfiguration configuration)
     {
         _serviceRepository = serviceRepository;
         _specializationRepository = specializationRepository;
         _categoryRepository = categoryRepository;
         _mapper = mapper;
+        _endPoint = bus.GetSendEndpoint(new Uri(configuration.GetValue<string>("RabbitMQ:Uri") + configuration.GetValue<string>("RabbitMQ:QueueName:Producer:Service"))).GetAwaiter().GetResult();
     }
 
     public async Task<List<ServiceDto>> GetActiveAsync()
@@ -46,7 +51,7 @@ public class ServiceService : IServiceService
         return serviceList;
     }
 
-    public async Task<ServiceDto> GetByIdAsync(string id)
+    public async Task<ServiceDto> GetByIdAsync(Guid id)
     {
         var service = await _serviceRepository.GetByIdAsync(id);
         return _mapper.Map<ServiceDto>(service);
@@ -70,7 +75,7 @@ public class ServiceService : IServiceService
         return _mapper.Map<ServiceDto>(service);
     }
 
-    public async Task<ServiceDto> ChangeStatusAsync(string id, bool status)
+    public async Task<ServiceDto> ChangeStatusAsync(Guid id, bool status)
     {
         var service = await _serviceRepository.GetByIdAsync(id);
         if (service == null)
@@ -81,7 +86,7 @@ public class ServiceService : IServiceService
         return _mapper.Map<ServiceDto>(service);
     }
 
-    public async Task<ServiceDto> UpdateAsync(string id, ServiceForUpdateDto model)
+    public async Task<ServiceDto> UpdateAsync(Guid id, ServiceForUpdateDto model)
     {
         var service = await _serviceRepository.GetByIdAsync(id);
         if (service == null)
@@ -96,6 +101,12 @@ public class ServiceService : IServiceService
         service.CategoryId = category.Id;
         service.SpecializationId = specialization.Id;
         await _serviceRepository.UpdateAsync(service);
+        var message = new ServiceMessage
+        {
+            Id = id,
+            ServiceName = model.Name
+        };
+        await _endPoint.Send(message);
         return _mapper.Map<ServiceDto>(service);
     }
 }

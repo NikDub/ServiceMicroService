@@ -34,7 +34,7 @@ public class ServicesController : Controller
 
     [HttpGet("{id}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var service = await _serviceService.GetByIdAsync(id);
         if (service == null)
@@ -54,7 +54,7 @@ public class ServicesController : Controller
 
     [HttpPut("{id}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> Update(string id, [FromBody] ServiceForUpdateDto model)
+    public async Task<IActionResult> Update(Guid id, [FromBody] ServiceForUpdateDto model)
     {
         var service = await _serviceService.UpdateAsync(id, model);
         if (service == null)
@@ -65,7 +65,7 @@ public class ServicesController : Controller
 
     [HttpPut("{id}/status/{status}")]
     [Authorize(Roles = nameof(UserRole.Receptionist))]
-    public async Task<IActionResult> UpdateStatus(string id, bool status)
+    public async Task<IActionResult> UpdateStatus(Guid id, bool status)
     {
         var service = await _serviceService.ChangeStatusAsync(id, status);
         if (service == null)
