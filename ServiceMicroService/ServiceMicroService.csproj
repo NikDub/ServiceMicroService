@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <Reference Include="SharedModel">
-      <HintPath>..\..\..\SharedModel\SharedModel\bin\Debug\net7.0\SharedModel.dll</HintPath>
+      <HintPath>..\..\SharedModel\SharedModel\bin\Debug\net7.0\SharedModel.dll</HintPath>
     </Reference>
   </ItemGroup>
 
