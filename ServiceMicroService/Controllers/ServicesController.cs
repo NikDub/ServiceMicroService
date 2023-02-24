@@ -25,7 +25,6 @@ public class ServicesController : Controller
     }
 
     [HttpGet("all")]
-    [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> GetAll()
     {
         var services = await _serviceService.GetAllDividedByCategoryAsync();

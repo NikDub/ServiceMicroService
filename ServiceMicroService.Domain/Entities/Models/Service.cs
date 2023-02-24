@@ -12,7 +12,8 @@ public class Service
 
     public string Name { get; set; }
 
-    [Precision(18, 2)] public decimal Price { get; set; }
+    [Precision(18, 2)] 
+    public decimal Price { get; set; }
 
     public bool IsActive { get; set; }
 

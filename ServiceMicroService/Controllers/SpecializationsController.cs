@@ -18,7 +18,6 @@ public class SpecializationsController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Patient)}")]
     public async Task<IActionResult> Get()
     {
         var specializations = await _specializationService.GetAsync();

@@ -43,10 +43,10 @@ public class ServiceService : IServiceService
             serviceList.Analyzes = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Analyzes)].ToList());
 
         if (services.ContainsKey(nameof(CategoryEnum.Diagnostics)))
-            serviceList.Analyzes = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Diagnostics)].ToList());
+            serviceList.Diagnostics = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Diagnostics)].ToList());
 
         if (services.ContainsKey(nameof(CategoryEnum.Consultations)))
-            serviceList.Analyzes = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Consultations)].ToList());
+            serviceList.Consultations = _mapper.Map<List<ServiceDto>>(services[nameof(CategoryEnum.Consultations)].ToList());
 
         return serviceList;
     }
