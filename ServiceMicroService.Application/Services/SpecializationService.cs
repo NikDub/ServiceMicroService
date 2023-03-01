@@ -1,20 +1,25 @@
 ﻿using AutoMapper;
+using MassTransit;
+using Microsoft.Extensions.Configuration;
 using ServiceMicroService.Application.Dto.Specialization;
 using ServiceMicroService.Application.Services.Abstractions;
 using ServiceMicroService.Domain.Entities.Models;
 using ServiceMicroService.Infrastructure.Repository.Abstractions;
+using SharedModel;
 
 namespace ServiceMicroService.Application.Services;
 
 public class SpecializationService : ISpecializationService
 {
     private readonly IMapper _mapper;
+    private readonly ISendEndpoint _endPoint;
     private readonly ISpecializationRepository _specializationRepository;
 
-    public SpecializationService(ISpecializationRepository specializationRepository, IMapper mapper)
+    public SpecializationService(ISpecializationRepository specializationRepository, IMapper mapper, IBus bus, IConfiguration configuration)
     {
         _specializationRepository = specializationRepository;
         _mapper = mapper;
+        _endPoint = bus.GetSendEndpoint(new Uri(configuration.GetValue<string>("RabbitMQ:Uri") + configuration.GetValue<string>("RabbitMQ:QueueName:Producer:Specialization"))).GetAwaiter().GetResult();
     }
 
     public async Task<List<SpecializationDto>> GetAsync()
@@ -23,13 +28,13 @@ public class SpecializationService : ISpecializationService
         return _mapper.Map<List<SpecializationDto>>(specializations);
     }
 
-    public async Task<SpecializationDto> GetByIdAsync(string id)
+    public async Task<SpecializationDto> GetByIdAsync(Guid id)
     {
         var specialization = await _specializationRepository.GetByIdAsync(id);
         return _mapper.Map<SpecializationDto>(specialization);
     }
 
-    public async Task<SpecializationWithServiceDto> GetByIdWithServicesAsync(string id)
+    public async Task<SpecializationWithServiceDto> GetByIdWithServicesAsync(Guid id)
     {
         var specialization = await _specializationRepository.GetByIdAsync(id);
         return _mapper.Map<SpecializationWithServiceDto>(specialization);
@@ -46,7 +51,7 @@ public class SpecializationService : ISpecializationService
         return _mapper.Map<SpecializationDto>(specialization);
     }
 
-    public async Task<SpecializationDto> ChangeStatusAsync(string id, bool status)
+    public async Task<SpecializationDto> ChangeStatusAsync(Guid id, bool status)
     {
         var specialization = await _specializationRepository.GetByIdAsync(id);
         if (specialization == null)
@@ -57,7 +62,7 @@ public class SpecializationService : ISpecializationService
         return _mapper.Map<SpecializationDto>(specialization);
     }
 
-    public async Task<SpecializationDto> UpdateAsync(string id, SpecializationForUpdateDto model)
+    public async Task<SpecializationDto> UpdateAsync(Guid id, SpecializationForUpdateDto model)
     {
         var specialization = await _specializationRepository.GetByIdAsync(id);
         if (specialization == null)
@@ -65,6 +70,12 @@ public class SpecializationService : ISpecializationService
 
         _mapper.Map(model, specialization);
         await _specializationRepository.UpdateAsync(specialization);
+        var message = new SpecializationMessage
+        {
+            Id = id,
+            SpecializationName = model.Name
+        };
+        await _endPoint.Send(message);
         return _mapper.Map<SpecializationDto>(specialization);
     }
 }

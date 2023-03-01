@@ -4,7 +4,7 @@ namespace ServiceMicroService.Application.Dto.Specialization;
 
 public class SpecializationWithServiceDto
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public bool IsActive { get; set; }
 

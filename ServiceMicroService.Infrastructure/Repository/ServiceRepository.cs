@@ -15,7 +15,11 @@ public class ServiceRepository : IServiceRepository
 
     public async Task<IEnumerable<Service>> GetAllActiveOrNotAsync(bool isActive)
     {
-        return await _db.Services.Where(r => r.IsActive == isActive).AsNoTracking().ToListAsync();
+        return await _db.Services.Where(r => r.IsActive == isActive)
+            .Include(e=>e.Category)
+            .Include(e=>e.Specialization)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Dictionary<string, List<Service>>> GetGroupedByCategoryAsync()
@@ -25,7 +29,7 @@ public class ServiceRepository : IServiceRepository
             .ToDictionaryAsync(r => r.Key, t => t.Services);
     }
 
-    public async Task<Service> GetByIdAsync(string id)
+    public async Task<Service> GetByIdAsync(Guid id)
     {
         return await _db.Services.FindAsync(id);
     }

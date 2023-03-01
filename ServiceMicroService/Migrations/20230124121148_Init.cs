@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -16,7 +17,7 @@ namespace ServiceMicroService.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeSlotSize = table.Column<int>(type: "int", nullable: false)
                 },
@@ -29,7 +30,7 @@ namespace ServiceMicroService.Migrations
                 name: "Specializations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -42,12 +43,12 @@ namespace ServiceMicroService.Migrations
                 name: "Services",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SpecializationId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SpecializationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,12 +57,14 @@ namespace ServiceMicroService.Migrations
                         name: "FK_Services_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Services_Specializations_SpecializationId",
                         column: x => x.SpecializationId,
                         principalTable: "Specializations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -69,9 +72,9 @@ namespace ServiceMicroService.Migrations
                 columns: new[] { "Id", "Name", "TimeSlotSize" },
                 values: new object[,]
                 {
-                    { "4050f457-6642-4bd6-b113-d2a9ad92af56", "Consultations", 10 },
-                    { "8a8abd81-222a-4c27-a414-43dff95e6549", "Analyzes", 10 },
-                    { "c47124fa-96d5-4534-bc1e-2dc81bdfdc6b", "Diagnostics", 10 }
+                    { new Guid("4050f457-6642-4bd6-b113-d2a9ad92af56"), "Consultations", 10 },
+                    { new Guid("8a8abd81-222a-4c27-a414-43dff95e6549"), "Analyzes", 10 },
+                    { new Guid("c47124fa-96d5-4534-bc1e-2dc81bdfdc6b"), "Diagnostics", 10 }
                 });
 
             migrationBuilder.CreateIndex(

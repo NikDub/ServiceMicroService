@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -56,6 +57,17 @@ public static class ServiceExtensions
         services.AddFluentValidationAutoValidation();
         services.AddFluentValidationClientsideAdapters();
         services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+    }
+    public static void ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMassTransit(r =>
+        {
+            r.UsingRabbitMq((_, cfg) =>
+            {
+                cfg.Host(new Uri(configuration.GetValue<string>("RabbitMQ:ConnectionStrings") ??
+                                 throw new NotImplementedException()));
+            });
+        });
     }
 
     public static void ConfigureSwagger(this IServiceCollection services)
